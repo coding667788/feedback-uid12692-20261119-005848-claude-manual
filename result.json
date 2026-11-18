@@ -1,0 +1,1708 @@
+{
+  "results": [
+    {
+      "case_id": "must_delete_overdue",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1770681600,
+            "date": "2026-02-10"
+          },
+          "deadline_day": {
+            "seconds": 1775865600,
+            "date": "2026-04-11"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1776038400,
+            "date": "2026-04-13"
+          },
+          "on_time": false
+        }
+      },
+      "audit": {
+        "cutoff": 2,
+        "max_entry_seq": 2,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1775952000,
+        "today_date": "2026-04-12",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 30,
+            "max_retention_days": 90,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "optional_cleanup",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 2,
+        "scheduled_count": 2,
+        "day_sum": 3,
+        "scheduled_day_sum": 3,
+        "not_deleted_penalty": 3,
+        "by_day": {
+          "1": [
+            "o1"
+          ],
+          "2": [
+            "o2"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1778025600,
+            "date": "2026-05-06"
+          },
+          "deadline_day": {
+            "seconds": 1783209600,
+            "date": "2026-07-05"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1778112000,
+            "date": "2026-05-07"
+          },
+          "on_time": true
+        },
+        "o2": {
+          "object_id": "o2",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1778025600,
+            "date": "2026-05-06"
+          },
+          "deadline_day": {
+            "seconds": 1783209600,
+            "date": "2026-07-05"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 2,
+          "delete_day": {
+            "seconds": 1778198400,
+            "date": "2026-05-08"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 2,
+        "max_entry_seq": 2,
+        "occurred_at": 1775433600,
+        "occurred_date": "2026-04-06",
+        "today": 1778025600,
+        "today_date": "2026-05-06",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 30,
+            "max_retention_days": 90,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "rule_contradiction",
+      "request_id": "q1",
+      "status": "error",
+      "error": {
+        "code": "RULE_CONTRADICTION",
+        "message": "effective rule of jurisdiction 'EU' has min_retention_days > max_retention_days",
+        "details": {
+          "jurisdiction": "EU",
+          "min_retention_days": 90,
+          "max_retention_days": 30
+        }
+      }
+    },
+    {
+      "case_id": "rule_version_conflict",
+      "request_id": "q1-only-first-visible",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 2,
+        "scheduled_day_sum": 2,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "2": [
+            "o1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "deadline_day": {
+            "seconds": 1769817600,
+            "date": "2026-01-31"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 2,
+          "delete_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 1,
+        "max_entry_seq": 2,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1767225600,
+            "valid_from_date": "2026-01-01",
+            "min_retention_days": 2,
+            "max_retention_days": 20,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "rule_version_conflict",
+      "request_id": "q2-both-visible",
+      "status": "error",
+      "error": {
+        "code": "RULE_VERSION_CONFLICT",
+        "message": "jurisdiction 'EU': conflicting values for rule version valid from day 20454",
+        "details": {
+          "jurisdiction": "EU",
+          "valid_from_day": 20454,
+          "values": [
+            [
+              2,
+              20
+            ],
+            [
+              5,
+              25
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "rule_time_exactly_equal",
+      "request_id": "q1-occurred-exactly-at-rev2",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 5,
+        "scheduled_day_sum": 5,
+        "not_deleted_penalty": 8,
+        "by_day": {
+          "5": [
+            "o1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1771977600,
+            "date": "2026-02-25"
+          },
+          "deadline_day": {
+            "seconds": 1772236800,
+            "date": "2026-02-28"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 5,
+          "delete_day": {
+            "seconds": 1771977600,
+            "date": "2026-02-25"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 3,
+        "max_entry_seq": 3,
+        "occurred_at": 1771545600,
+        "occurred_date": "2026-02-20",
+        "today": 1771545600,
+        "today_date": "2026-02-20",
+        "horizon_days": 7,
+        "daily_capacity": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 2,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1771545600,
+            "valid_from_date": "2026-02-20",
+            "min_retention_days": 5,
+            "max_retention_days": 8,
+            "entry_seq": 2
+          }
+        }
+      }
+    },
+    {
+      "case_id": "rule_time_exactly_equal",
+      "request_id": "q2-one-second-before-rev2",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 0,
+        "day_sum": 8,
+        "scheduled_day_sum": 0,
+        "not_deleted_penalty": 8,
+        "by_day": {},
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1772323200,
+            "date": "2026-03-01"
+          },
+          "deadline_day": {
+            "seconds": 1773187200,
+            "date": "2026-03-11"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "not_yet_eligible",
+          "day": null,
+          "on_time": null,
+          "blocking_path": [
+            "o1"
+          ]
+        }
+      },
+      "audit": {
+        "cutoff": 3,
+        "max_entry_seq": 3,
+        "occurred_at": 1771545599,
+        "occurred_date": "2026-02-19",
+        "today": 1771545600,
+        "today_date": "2026-02-20",
+        "horizon_days": 7,
+        "daily_capacity": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 2,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1767225600,
+            "valid_from_date": "2026-01-01",
+            "min_retention_days": 10,
+            "max_retention_days": 20,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "retroactive_preservation",
+      "request_id": "q1-cutoff-before-preservation",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768521600,
+            "date": "2026-01-16"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1769126400,
+            "date": "2026-01-23"
+          },
+          "on_time": false
+        }
+      },
+      "audit": {
+        "cutoff": 4,
+        "max_entry_seq": 8,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1769040000,
+        "today_date": "2026-01-22",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 5,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "retroactive_preservation",
+      "request_id": "q2-cutoff-after-preservation",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 0,
+        "day_sum": 4,
+        "scheduled_day_sum": 0,
+        "not_deleted_penalty": 4,
+        "by_day": {},
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768521600,
+            "date": "2026-01-16"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "preserved",
+          "day": null,
+          "on_time": null,
+          "blocking_path": [
+            "o1"
+          ],
+          "active_preservations": [
+            "p1"
+          ],
+          "deadline_missed": true
+        }
+      },
+      "audit": {
+        "cutoff": 6,
+        "max_entry_seq": 8,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1769040000,
+        "today_date": "2026-01-22",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 1,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 5,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "retroactive_preservation",
+      "request_id": "q3-cutoff-after-release",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768521600,
+            "date": "2026-01-16"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1769126400,
+            "date": "2026-01-23"
+          },
+          "on_time": false
+        }
+      },
+      "audit": {
+        "cutoff": 8,
+        "max_entry_seq": 8,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1769040000,
+        "today_date": "2026-01-22",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 1,
+          "releases": 1
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 5,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "retroactive_preservation",
+      "request_id": "q4-cutoff-exactly-at-preservation",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 0,
+        "day_sum": 4,
+        "scheduled_day_sum": 0,
+        "not_deleted_penalty": 4,
+        "by_day": {},
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768521600,
+            "date": "2026-01-16"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "preserved",
+          "day": null,
+          "on_time": null,
+          "blocking_path": [
+            "o1"
+          ],
+          "active_preservations": [
+            "p1"
+          ],
+          "deadline_missed": true
+        }
+      },
+      "audit": {
+        "cutoff": 5,
+        "max_entry_seq": 8,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1769040000,
+        "today_date": "2026-01-22",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 1,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 5,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "blocked_by_downstream",
+      "request_id": "q1-blocked",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 0,
+        "day_sum": 8,
+        "scheduled_day_sum": 0,
+        "not_deleted_penalty": 4,
+        "by_day": {},
+        "overdue_objects": []
+      },
+      "objects": {
+        "c1": {
+          "object_id": "c1",
+          "record_id": "r2",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "preserved",
+          "day": null,
+          "on_time": null,
+          "blocking_path": [
+            "c1"
+          ],
+          "active_preservations": [
+            "hold-1"
+          ],
+          "deadline_missed": true
+        },
+        "p1": {
+          "object_id": "p1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "blocked_by_downstream",
+          "day": null,
+          "on_time": null,
+          "blocking_path": [
+            "p1",
+            "c1"
+          ],
+          "deadline_missed": true
+        }
+      },
+      "audit": {
+        "cutoff": 5,
+        "max_entry_seq": 6,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 2,
+          "preservations": 1,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 2,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "blocked_by_downstream",
+      "request_id": "q2-released",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 2,
+        "scheduled_count": 2,
+        "day_sum": 3,
+        "scheduled_day_sum": 3,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "1": [
+            "c1"
+          ],
+          "2": [
+            "p1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "c1": {
+          "object_id": "c1",
+          "record_id": "r2",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        },
+        "p1": {
+          "object_id": "p1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 2,
+          "delete_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 6,
+        "max_entry_seq": 6,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 3,
+        "daily_capacity": [
+          1,
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 2,
+          "preservations": 1,
+          "releases": 1
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 2,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "capacity_greedy_suboptimal",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 2,
+        "scheduled_count": 2,
+        "day_sum": 3,
+        "scheduled_day_sum": 3,
+        "not_deleted_penalty": 3,
+        "by_day": {
+          "2": [
+            "A"
+          ],
+          "1": [
+            "B"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "A": {
+          "object_id": "A",
+          "record_id": "rA",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 2,
+          "delete_day": {
+            "seconds": 1768262400,
+            "date": "2026-01-13"
+          },
+          "on_time": true
+        },
+        "B": {
+          "object_id": "B",
+          "record_id": "rB",
+          "jurisdiction": "US",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "overdue": false,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 4,
+        "max_entry_seq": 4,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 2,
+          "records": 2,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 2,
+            "entry_seq": 1
+          },
+          "US": {
+            "jurisdiction": "US",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 1,
+            "entry_seq": 2
+          }
+        }
+      }
+    },
+    {
+      "case_id": "lex_tiebreak",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 3,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 2,
+        "by_day": {
+          "1": [
+            "a1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "a1": {
+          "object_id": "a1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        },
+        "a2": {
+          "object_id": "a2",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "not_selected",
+          "day": null,
+          "on_time": null
+        }
+      },
+      "audit": {
+        "cutoff": 2,
+        "max_entry_seq": 2,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 1,
+        "daily_capacity": [
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "same_day_chaining",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 2,
+        "scheduled_count": 2,
+        "day_sum": 2,
+        "scheduled_day_sum": 2,
+        "not_deleted_penalty": 2,
+        "by_day": {
+          "1": [
+            "down",
+            "up"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "down": {
+          "object_id": "down",
+          "record_id": "r2",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        },
+        "up": {
+          "object_id": "up",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 3,
+        "max_entry_seq": 3,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 1,
+        "daily_capacity": [
+          2
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 2,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "overdue_not_counted",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 2,
+        "day_sum": 2,
+        "scheduled_day_sum": 2,
+        "not_deleted_penalty": 4,
+        "by_day": {
+          "1": [
+            "o1",
+            "o2"
+          ]
+        },
+        "overdue_objects": [
+          "o1"
+        ]
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": true,
+          "required_within_horizon": true,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1769126400,
+            "date": "2026-01-23"
+          },
+          "on_time": false
+        },
+        "o2": {
+          "object_id": "o2",
+          "record_id": "r2",
+          "jurisdiction": "US",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1769817600,
+            "date": "2026-01-31"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1769126400,
+            "date": "2026-01-23"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 4,
+        "max_entry_seq": 4,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1769040000,
+        "today_date": "2026-01-22",
+        "horizon_days": 3,
+        "daily_capacity": [
+          2,
+          2,
+          2
+        ],
+        "visible": {
+          "rules": 2,
+          "records": 2,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          },
+          "US": {
+            "jurisdiction": "US",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 20,
+            "entry_seq": 2
+          }
+        }
+      }
+    },
+    {
+      "case_id": "no_applicable_rule",
+      "request_id": "q1",
+      "status": "error",
+      "error": {
+        "code": "NO_APPLICABLE_RULE",
+        "message": "no visible rule of jurisdiction 'EU' is valid at the occurrence day",
+        "details": {
+          "jurisdiction": "EU",
+          "occurred_day": 20454
+        }
+      }
+    },
+    {
+      "case_id": "release_unknown_preservation",
+      "request_id": "q1",
+      "status": "error",
+      "error": {
+        "code": "UNKNOWN_PRESERVATION",
+        "message": "release references unknown preservation 'ghost'",
+        "details": {
+          "preservation_id": "ghost"
+        }
+      }
+    },
+    {
+      "case_id": "record_not_visible",
+      "request_id": "q1-cutoff-5",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 0,
+        "scheduled_count": 0,
+        "day_sum": 3,
+        "scheduled_day_sum": 0,
+        "not_deleted_penalty": 3,
+        "by_day": {},
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "status": "record_not_visible",
+          "jurisdiction": null,
+          "earliest_day": null,
+          "deadline_day": null,
+          "overdue": null,
+          "required_within_horizon": null,
+          "day": null,
+          "on_time": null
+        }
+      },
+      "audit": {
+        "cutoff": 5,
+        "max_entry_seq": 6,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 0,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {}
+      }
+    },
+    {
+      "case_id": "record_not_visible",
+      "request_id": "q2-cutoff-6",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 3,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 6,
+        "max_entry_seq": 6,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-horizon-8",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "horizon_days must be an integer in 1..7",
+        "details": {
+          "field": "horizon_days",
+          "value": 8
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-horizon-0",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "horizon_days must be an integer in 1..7",
+        "details": {
+          "field": "horizon_days",
+          "value": 0
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-too-many-objects",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "at most 16 objects per request",
+        "details": {
+          "count": 17
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-duplicate-object",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "duplicate object ids in request",
+        "details": {
+          "object_ids": [
+            "o1",
+            "o1"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-cutoff",
+      "status": "error",
+      "error": {
+        "code": "INVALID_CUTOFF",
+        "message": "cutoff exceeds any recorded entry sequence",
+        "details": {
+          "cutoff": 99,
+          "max_entry_seq": 2
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-unknown-object",
+      "status": "error",
+      "error": {
+        "code": "UNKNOWN_OBJECT",
+        "message": "unknown object 'nope'",
+        "details": {
+          "object_id": "nope"
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-capacity-length",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "daily_capacity must be an integer or an array of horizon_days integers",
+        "details": {
+          "value": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "invalid_inputs",
+      "request_id": "bad-capacity-negative",
+      "status": "error",
+      "error": {
+        "code": "INVALID_INPUT",
+        "message": "daily_capacity entries must be >= 0",
+        "details": {
+          "value": -1
+        }
+      }
+    },
+    {
+      "case_id": "identical_version_reentry_ok",
+      "request_id": "q1",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 3,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 3,
+        "max_entry_seq": 3,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 2,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    },
+    {
+      "case_id": "record_conflict",
+      "request_id": "q1-conflict",
+      "status": "error",
+      "error": {
+        "code": "RECORD_CONFLICT",
+        "message": "record 'r1' has conflicting visible versions",
+        "details": {
+          "record_id": "r1"
+        }
+      }
+    },
+    {
+      "case_id": "record_conflict",
+      "request_id": "q2-single-visible",
+      "status": "ok",
+      "plan": {
+        "on_time_count": 1,
+        "scheduled_count": 1,
+        "day_sum": 1,
+        "scheduled_day_sum": 1,
+        "not_deleted_penalty": 3,
+        "by_day": {
+          "1": [
+            "o1"
+          ]
+        },
+        "overdue_objects": []
+      },
+      "objects": {
+        "o1": {
+          "object_id": "o1",
+          "record_id": "r1",
+          "jurisdiction": "EU",
+          "earliest_day": {
+            "seconds": 1768089600,
+            "date": "2026-01-11"
+          },
+          "deadline_day": {
+            "seconds": 1768953600,
+            "date": "2026-01-21"
+          },
+          "overdue": false,
+          "required_within_horizon": false,
+          "status": "scheduled",
+          "day": 1,
+          "delete_day": {
+            "seconds": 1768176000,
+            "date": "2026-01-12"
+          },
+          "on_time": true
+        }
+      },
+      "audit": {
+        "cutoff": 2,
+        "max_entry_seq": 3,
+        "occurred_at": 1768090000,
+        "occurred_date": "2026-01-11",
+        "today": 1768090000,
+        "today_date": "2026-01-11",
+        "horizon_days": 2,
+        "daily_capacity": [
+          1,
+          1
+        ],
+        "visible": {
+          "rules": 1,
+          "records": 1,
+          "preservations": 0,
+          "releases": 0
+        },
+        "rules_used": {
+          "EU": {
+            "jurisdiction": "EU",
+            "valid_from": 1758585600,
+            "valid_from_date": "2025-09-23",
+            "min_retention_days": 0,
+            "max_retention_days": 10,
+            "entry_seq": 1
+          }
+        }
+      }
+    }
+  ]
+}

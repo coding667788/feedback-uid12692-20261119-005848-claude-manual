@@ -1,0 +1,386 @@
+{
+  "description": "Synthetic replayable cases for the offline compliance deletion planner. All timestamps are Unix seconds (UTC). T0 = 1767225600 = 2026-01-01T00:00:00Z.",
+  "cases": [
+    {
+      "case_id": "must_delete_overdue",
+      "description": "Scenario MUST-DELETE: object past its max retention (overdue) is still scheduled; the deletion does not count as on-time and not deleting is only the last option.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 30, "max_retention_days": 90}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 2, "today": 1775952000, "horizon_days": 3, "daily_capacity": [1, 1, 1], "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "optional_cleanup",
+      "description": "Scenario OPTIONAL-CLEANUP: two eligible objects with a far deadline are both cleaned up; earliest day equals today exactly (boundary).",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 30, "max_retention_days": 90}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []},
+          {"object_id": "o2", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1775433600, "cutoff": 2, "today": 1778025600, "horizon_days": 2, "daily_capacity": [1, 1], "object_ids": ["o1", "o2"]}
+      ]
+    },
+    {
+      "case_id": "rule_contradiction",
+      "description": "Scenario RULE-CONTRADICTION: effective rule has min_retention_days > max_retention_days; the request is rejected.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 90, "max_retention_days": 30}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "rule_version_conflict",
+      "description": "Same rule version (valid_from day) with different values: rejected only when both conflicting entries are visible at the cutoff.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1767225600, "entry_seq": 1, "min_retention_days": 2, "max_retention_days": 20},
+          {"jurisdiction": "EU", "valid_from": 1767225600, "entry_seq": 2, "min_retention_days": 5, "max_retention_days": 25}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 1}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1-only-first-visible", "occurred_at": 1768090000, "cutoff": 1, "today": 1768090000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q2-both-visible", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "rule_time_exactly_equal",
+      "description": "Rule valid_from exactly equal to the occurrence moment selects the newer revision; one second earlier selects the older one.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1767225600, "entry_seq": 1, "min_retention_days": 10, "max_retention_days": 20},
+          {"jurisdiction": "EU", "valid_from": 1771545600, "entry_seq": 2, "min_retention_days": 5, "max_retention_days": 8}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 3}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1-occurred-exactly-at-rev2", "occurred_at": 1771545600, "cutoff": 3, "today": 1771545600, "horizon_days": 7, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q2-one-second-before-rev2", "occurred_at": 1771545599, "cutoff": 3, "today": 1771545600, "horizon_days": 7, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "retroactive_preservation",
+      "description": "Late-entered preservation rewrites the current judgment but not historical replay; release references the exact preservation id and lifts it retroactively.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 5, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [
+          {"preservation_id": "p1", "object_id": "o1", "entry_seq": 5}
+        ],
+        "releases": [
+          {"preservation_id": "p1", "entry_seq": 8}
+        ]
+      },
+      "requests": [
+        {"request_id": "q1-cutoff-before-preservation", "occurred_at": 1768090000, "cutoff": 4, "today": 1769040000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q2-cutoff-after-preservation", "occurred_at": 1768090000, "cutoff": 6, "today": 1769040000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q3-cutoff-after-release", "occurred_at": 1768090000, "cutoff": 8, "today": 1769040000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q4-cutoff-exactly-at-preservation", "occurred_at": 1768090000, "cutoff": 5, "today": 1769040000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "blocked_by_downstream",
+      "description": "Tight-deadline original blocked by a preserved derived copy; after the release the chain is deleted downstream-first.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 2}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2},
+          {"record_id": "r2", "jurisdiction": "EU", "entry_seq": 3}
+        ],
+        "objects": [
+          {"object_id": "p1", "record_id": "r1", "derived_from": []},
+          {"object_id": "c1", "record_id": "r2", "derived_from": ["p1"]}
+        ],
+        "preservations": [
+          {"preservation_id": "hold-1", "object_id": "c1", "entry_seq": 4}
+        ],
+        "releases": [
+          {"preservation_id": "hold-1", "entry_seq": 6}
+        ]
+      },
+      "requests": [
+        {"request_id": "q1-blocked", "occurred_at": 1768090000, "cutoff": 5, "today": 1768090000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["p1", "c1"]},
+        {"request_id": "q2-released", "occurred_at": 1768090000, "cutoff": 6, "today": 1768090000, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["p1", "c1"]}
+      ]
+    },
+    {
+      "case_id": "capacity_greedy_suboptimal",
+      "description": "Daily capacity defeats the naive per-day greedy: deleting lexicographically smallest first (A on day 1) yields only 1 on-time deletion; the optimum deletes B on day 1 and A on day 2.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 2},
+          {"jurisdiction": "US", "valid_from": 1758585600, "entry_seq": 2, "min_retention_days": 0, "max_retention_days": 1}
+        ],
+        "records": [
+          {"record_id": "rA", "jurisdiction": "EU", "entry_seq": 3},
+          {"record_id": "rB", "jurisdiction": "US", "entry_seq": 4}
+        ],
+        "objects": [
+          {"object_id": "A", "record_id": "rA", "derived_from": []},
+          {"object_id": "B", "record_id": "rB", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 4, "today": 1768090000, "horizon_days": 2, "daily_capacity": [1, 1], "object_ids": ["A", "B"]}
+      ]
+    },
+    {
+      "case_id": "lex_tiebreak",
+      "description": "Identical objects, capacity for one: the lexicographically smallest plan deletes the smaller id; not deleting is encoded as horizon+1.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "a1", "record_id": "r1", "derived_from": []},
+          {"object_id": "a2", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 1, "daily_capacity": [1], "object_ids": ["a1", "a2"]}
+      ]
+    },
+    {
+      "case_id": "same_day_chaining",
+      "description": "A same-day batch may eliminate dependencies in topological order: downstream and upstream are both deleted on day 1.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2},
+          {"record_id": "r2", "jurisdiction": "EU", "entry_seq": 3}
+        ],
+        "objects": [
+          {"object_id": "up", "record_id": "r1", "derived_from": []},
+          {"object_id": "down", "record_id": "r2", "derived_from": ["up"]}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 3, "today": 1768090000, "horizon_days": 1, "daily_capacity": [2], "object_ids": ["up", "down"]}
+      ]
+    },
+    {
+      "case_id": "overdue_not_counted",
+      "description": "Overdue deletions do not count as on-time; jurisdictions are computed independently (EU max 10 vs US max 20).",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10},
+          {"jurisdiction": "US", "valid_from": 1758585600, "entry_seq": 2, "min_retention_days": 0, "max_retention_days": 20}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 3},
+          {"record_id": "r2", "jurisdiction": "US", "entry_seq": 4}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []},
+          {"object_id": "o2", "record_id": "r2", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 4, "today": 1769040000, "horizon_days": 3, "daily_capacity": [2, 2, 2], "object_ids": ["o1", "o2"]}
+      ]
+    },
+    {
+      "case_id": "no_applicable_rule",
+      "description": "No visible rule revision is valid at the occurrence day.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1775865600, "entry_seq": 1, "min_retention_days": 5, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1767225600, "cutoff": 2, "today": 1767225600, "horizon_days": 3, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "release_unknown_preservation",
+      "description": "A release must reference an exact, recorded preservation id.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": [
+          {"preservation_id": "ghost", "entry_seq": 3}
+        ]
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 3, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "record_not_visible",
+      "description": "The record fact is invisible below its entry sequence; the object cannot be planned at an earlier cutoff.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 6}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1-cutoff-5", "occurred_at": 1768090000, "cutoff": 5, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q2-cutoff-6", "occurred_at": 1768090000, "cutoff": 6, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "invalid_inputs",
+      "description": "Request-level validation errors.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "bad-horizon-8", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 8, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "bad-horizon-0", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 0, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "bad-too-many-objects", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "x11", "x12", "x13", "x14", "x15", "x16", "x17"]},
+        {"request_id": "bad-duplicate-object", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1", "o1"]},
+        {"request_id": "bad-cutoff", "occurred_at": 1768090000, "cutoff": 99, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "bad-unknown-object", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["nope"]},
+        {"request_id": "bad-capacity-length", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 3, "daily_capacity": [1, 1], "object_ids": ["o1"]},
+        {"request_id": "bad-capacity-negative", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 2, "daily_capacity": -1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "identical_version_reentry_ok",
+      "description": "Re-entry of the same rule version with identical values is not a conflict.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10},
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 2, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 3}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1", "occurred_at": 1768090000, "cutoff": 3, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    },
+    {
+      "case_id": "record_conflict",
+      "description": "Two visible record facts with the same id but different jurisdictions are rejected; an earlier cutoff sees only one of them.",
+      "dataset": {
+        "rules": [
+          {"jurisdiction": "EU", "valid_from": 1758585600, "entry_seq": 1, "min_retention_days": 0, "max_retention_days": 10}
+        ],
+        "records": [
+          {"record_id": "r1", "jurisdiction": "EU", "entry_seq": 2},
+          {"record_id": "r1", "jurisdiction": "US", "entry_seq": 3}
+        ],
+        "objects": [
+          {"object_id": "o1", "record_id": "r1", "derived_from": []}
+        ],
+        "preservations": [],
+        "releases": []
+      },
+      "requests": [
+        {"request_id": "q1-conflict", "occurred_at": 1768090000, "cutoff": 3, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]},
+        {"request_id": "q2-single-visible", "occurred_at": 1768090000, "cutoff": 2, "today": 1768090000, "horizon_days": 2, "daily_capacity": 1, "object_ids": ["o1"]}
+      ]
+    }
+  ]
+}
